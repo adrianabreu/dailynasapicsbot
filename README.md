@@ -17,6 +17,7 @@ the required parameters and enjoy!
 ## Pictures
 
 ![Live bot](imgs/live.png)
+![Live bot 2](imgs/live2.png)
 
 ## Like it?
 

@@ -13,44 +13,43 @@ cron.schedule(config.cron, function() {
 
     function fetchImage(destiny, name, callback) {
 
-        let f = fs.createWriteStream(name);
-
-        f.on('finish', function(){
-            callback(name);
-        });
-
-        request.get({ 
+        const file = request.get({ 
             url : destiny,
             headers: { 
                 'User-Agent': 'request' 
             } 
-        })
-        .pipe(f);
+        }).on('error', (err) => {
+
+            console.log(err);
+
+        });
+
+        callback(file);
     }
 
     //First request to NASA API for getting the JSON with the URL's 
-    request.get(nasa_url, function(error, response, body) {
+    request.get(nasa_url, (error, response, body) => {
 
         if (!error) {
 
-            let my_obj = JSON.parse(body);
+            let nasa_obj = JSON.parse(body);
+            
+                fetchImage(nasa_obj.url, nasa_obj.title + '.jpg', function(stream) {
+                    
+                    bot.sendPhoto(config.channel, stream, { caption : nasa_obj.title });
 
-            bot.sendMessage(config.channel, my_obj.title);
+                });
 
-            fetchImage(my_obj.url, my_obj.title + '.jpg', function(f_name) {
-                
-                bot.sendPhoto(config.channel, f_name);
 
-            });
+                fetchImage(nasa_obj.url, nasa_obj.title + 'hd.jpg', function(stream) {
 
-            fetchImage(my_obj.url, my_obj.title + 'hd.jpg', function(f_name) {
+                    bot.sendDocument(config.channel, stream);
 
-                bot.sendDocument(config.channel, f_name);
-
-            });
+                });
 
         } else {
             console.log(error);
         }
-    })
+    });
+    
 });
