@@ -8,12 +8,6 @@ It justs download a JSON through the api once per day (using cron on openshift),
 then sends: The title, the normal pic as photo and the hd pic as a document to a telegram channel.
 
 
-## Usage
-
-If you want to host yours, just download it, modify the config.js in config folder with
-the required parameters and enjoy!
-
-
 ## Pictures
 
 ![Live bot](imgs/live.png)
@@ -22,6 +16,11 @@ the required parameters and enjoy!
 ## Like it?
 
 [Join the telegram channel](https://telegram.me/dailynasapics) **and star this repo!**
+
+## Usage
+
+If you want to host yours, just download it, modify the config.js in config folder with
+the required parameters and enjoy!
 
 ## License 
 
