@@ -1,5 +1,5 @@
 const request     = require('request');
-const fs          = require('fs');
+const rp          = require('request-promise');
 const TelegramBot = require('node-telegram-bot-api');
 const config      = require('../config/config');
 const logger      = require('./logger');
@@ -16,39 +16,58 @@ function fetchImage(destiny, name, callback) {
         headers: { 
             'User-Agent': 'request' 
         } 
-    }).on('error', (err) => {
-        logger.error(err);
+    }).on('error', err => {     
+        callback(err, null);
     });
 
-    callback(file);
+    callback(null, file);
+
 }
 
 //First request to NASA API for getting the JSON with the URL's 
-request.get(nasa_url, (error, response, body) => {
+rp(nasa_url).then( body => {
 
-    if (!error) {
-
-        let nasa_obj = JSON.parse(body);
+    let nasa_obj = JSON.parse(body);
         
-            fetchImage(nasa_obj.url, nasa_obj.title + '.jpg', function(stream) {
+    fetchImage(nasa_obj.url, nasa_obj.title + '.jpg', function(err, stream) {
                 
-                bot.sendPhoto(config.channel, stream, { caption : nasa_obj.title })
-                .catch( (err) => {
-                    logger.error(err);
-                });
+        if (err) {
 
+            logger.error(err);
+
+        } else {
+            
+            bot.sendPhoto(config.channel, stream, { caption : nasa_obj.title })
+            .then( function(){
+                logger.info('Normal pic send');
+            })
+            .catch( (err) => {
+                logger.error(err);
+            });                 
+        }
+    });
+
+    fetchImage(nasa_obj.url, nasa_obj.title + 'hd.jpg', function(err, stream) {
+
+        if (err) {
+
+            logger.error(err);
+
+        } else {
+
+            bot.sendDocument(config.channel, stream)
+            .then( function(){
+                logger.info('HD pic send');
+            })
+            .catch( (err) => {
+               logger.error(err); 
             });
 
-            fetchImage(nasa_obj.url, nasa_obj.title + 'hd.jpg', function(stream) {
+        }
 
-                bot.sendDocument(config.channel, stream)
-                .catch( (err) => {
-                   logger.error(err); 
-                });
+    });
 
-            });
-
-    } else {
-        logger.error(err);
-    }
+}).catch( error => {
+    console.log(error);
+    logger.error(error);
 });
