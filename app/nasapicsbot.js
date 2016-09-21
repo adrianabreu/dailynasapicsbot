@@ -9,6 +9,9 @@ const bot         = new TelegramBot(config.token);
 
 logger.info('New picture');
 
+/*
+ * IMAGE PROCESSING 
+ */
 function fetchImage(destiny, name, callback) {
 
     const file = request.get({ 
@@ -24,11 +27,8 @@ function fetchImage(destiny, name, callback) {
 
 }
 
-//First request to NASA API for getting the JSON with the URL's 
-rp(nasa_url).then( body => {
+function imageType(nasa_obj) {
 
-    let nasa_obj = JSON.parse(body);
-        
     fetchImage(nasa_obj.url, nasa_obj.title + '.jpg', function(err, stream) {
                 
         if (err) {
@@ -38,10 +38,10 @@ rp(nasa_url).then( body => {
         } else {
             
             bot.sendPhoto(config.channel, stream, { caption : nasa_obj.title })
-            .then( function(){
+            .then( function() {
                 logger.info('Normal pic send');
             })
-            .catch( (err) => {
+            .catch( err => {
                 logger.error(err);
             });                 
         }
@@ -59,15 +59,40 @@ rp(nasa_url).then( body => {
             .then( function(){
                 logger.info('HD pic send');
             })
-            .catch( (err) => {
+            .catch( err => {
                logger.error(err); 
             });
 
         }
+    });   
+}
 
-    });
+/*
+ * ANY OTHER KIND OF MEDIA 
+ */
+function otherType(nasa_obj) {
+
+    if (nasa_obj['media_type'] === 'video') {
+        let msg = nasa_obj.title + '\n';
+        msg += nasa_obj.url;
+        bot.sendMessage(config.channel, msg);
+    }
+}
+
+/*
+ * ENTRY POINT
+ * First request to NASA API for getting the JSON with the URL's 
+ */
+rp(nasa_url).then( body => {
+
+    let nasa_obj = JSON.parse(body);
+    
+    if (nasa_obj['media_type'] === 'image') {
+        imageType(nasa_obj)
+    } else {
+        otherType(nasa_obj);
+    }
 
 }).catch( error => {
-    console.log(error);
     logger.error(error);
 });
