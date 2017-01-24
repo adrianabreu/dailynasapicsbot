@@ -1,7 +1,7 @@
 ## Daily Nasa Pics
 
 Every day NASA publishes a photo through its open api. 
-Since I really like almost everyone of then and I share them with my friends,
+Since I really like almost all of them and I usually share them with my friends,
 I decided to create this bot.
 
 It justs download a JSON through the api once per day (using cron on openshift), and
