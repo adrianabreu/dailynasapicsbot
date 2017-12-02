@@ -1,4 +1,4 @@
 module.exports = {
    'token'   : 'MY_TOKEN',
-   'channel' : 'channel_name'
+   'channel' : '@channel_name'
 }
