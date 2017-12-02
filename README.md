@@ -3,7 +3,7 @@
 Every day NASA publishes a photo through its open api. 
 Since I really like those images and I usually share them with my friends I decided to create this bot.
 
-It justs download a JSON through the api once per day (using cron on openshift), and
+It justs download a JSON through the api once per day (using cron on a linux hosted machine), and
 then sends: The title, the normal pic as photo and the hd pic as a document to a telegram channel.
 
 
@@ -20,6 +20,14 @@ then sends: The title, the normal pic as photo and the hd pic as a document to a
 
 If you want to host yours, just download it, modify the config.js in config folder with
 the required parameters and enjoy!
+
+## Cron script example
+
+Do you want to receive the picture every day at some time? For example, using a cornjob
+
+```
+0 8 * * * node ~/dailynasapicsbot/app.js
+```
 
 ## License 
 
