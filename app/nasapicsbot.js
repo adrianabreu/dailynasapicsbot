@@ -19,9 +19,8 @@ function fetchImage(destiny, name, callback) {
         headers: { 
             'User-Agent': 'request' 
         } 
-    }).on('error', err => {     
-        callback(err, null);
-    });
+    })
+    .on('error', err => callback(err, null));
 
     callback(null, file);
 
@@ -30,39 +29,22 @@ function fetchImage(destiny, name, callback) {
 function imageType(nasa_obj) {
 
     fetchImage(nasa_obj.url, nasa_obj.title + '.jpg', function(err, stream) {
-                
         if (err) {
-
-            logger.error(err);
-
+            logger.error('Error fetching normal pict', err);
         } else {
-            
             bot.sendPhoto(config.channel, stream, { caption : nasa_obj.title })
-            .then( function() {
-                logger.info('Normal pic send');
-            })
-            .catch( err => {
-                logger.error(err);
-            });                 
+            .then( () => logger.info('Normal pic send'))
+            .catch( err => logger.error('Error sending normal pic', err));             
         }
     });
 
     fetchImage(nasa_obj.url, nasa_obj.title + 'hd.jpg', function(err, stream) {
-
         if (err) {
-
-            logger.error(err);
-
+            logger.error('Error fetching hd image', err);
         } else {
-
             bot.sendDocument(config.channel, stream)
-            .then( function(){
-                logger.info('HD pic send');
-            })
-            .catch( err => {
-               logger.error(err); 
-            });
-
+            .then( () => logger.info('HD pic send'))
+            .catch( err => logger.error('Error sending HD PiC', err));
         }
     });   
 }
@@ -93,6 +75,4 @@ rp(nasa_url).then( body => {
         otherType(nasa_obj);
     }
 
-}).catch( error => {
-    logger.error(error);
-});
+}).catch( error => logger.error('Error fetching nasa JSON', error));
