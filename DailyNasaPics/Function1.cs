@@ -15,7 +15,7 @@ namespace DailyNasaPics
         private static HttpClient _httpClient = new HttpClient();
 
         [FunctionName("DailyNasaPicMorning")]
-        public static async Task Run([TimerTrigger("0 0 6 * * *")]TimerInfo myTimer, TraceWriter log, ExecutionContext context)
+        public static async Task Run([TimerTrigger("0 0 6  * * *")]TimerInfo myTimer, TraceWriter log, ExecutionContext context)
         {
             // TimerTrigger("0 0 8 * * *")
             log.Info($"Executing bot at: {DateTime.Now}");
