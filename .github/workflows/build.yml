@@ -3,8 +3,6 @@ name: Build
 on:
   push:
     branches: [ main, master ]
-  pull_request:
-    branches: [ main, master ]
   workflow_dispatch:
 
 env:
@@ -44,42 +42,6 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: dailynasapicsbot-linux-x86_64
-          path: target/release/dailynasapicsbot
-          retention-days: 30
-
-  build-macos:
-    name: Build binary (macOS)
-    runs-on: macos-latest
-    
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Install Rust
-        uses: dtolnay/rust-toolchain@stable
-        with:
-          toolchain: stable
-
-      - name: Cache cargo registry
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.cargo/bin/
-            ~/.cargo/registry/index/
-            ~/.cargo/registry/cache/
-            ~/.cargo/git/db/
-            target/
-          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-cargo-
-
-      - name: Build release binary
-        run: cargo build --release
-
-      - name: Upload binary artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: dailynasapicsbot-macos-x86_64
           path: target/release/dailynasapicsbot
           retention-days: 30
 
