@@ -3,8 +3,7 @@
 Every day NASA publishes a photo through its open api. 
 Since I really like those images and I usually share them with my friends I decided to create this bot.
 
-It justs download a JSON through the api once per day (using a cron trigger for the azure function), and
-then sends: The title, the normal pic as photo, the hd pic as a document to a telegram channel.
+It justs download a JSON through the api once per day, then sends: The title, the normal pic as photo, the hd pic as a document to a telegram channel.
 
 
 ## Pictures
