@@ -1,10 +1,9 @@
 ## Daily Nasa Pics
 
-Every day NASA publishes a photo through its open api. 
+Every day NASA publishes a photo through its open API.
 Since I really like those images and I usually share them with my friends I decided to create this bot.
 
-It justs download a JSON through the api once per day, then sends: The title, the normal pic as photo, the hd pic as a document to a telegram channel.
-
+Once a day it downloads the APOD JSON, then sends to a Telegram channel: the title, the image as a photo (or the video as a video), the HD image as a document, and the explanation.
 
 ## Pictures
 
@@ -17,8 +16,23 @@ It justs download a JSON through the api once per day, then sends: The title, th
 
 ## Usage
 
-Setup a new function on your azure instance and deploy the code using the params: *token* and *channelName*.
+This runs as a [Trigger.dev](https://trigger.dev) scheduled task at 08:00 Europe/Madrid.
 
-## License 
+```bash
+pnpm install
+cp .env.example .env
+pnpm dev
+```
+
+Set these environment variables locally and in the Trigger.dev dashboard (Prod):
+
+- `TELEGRAM_BOT_TOKEN`
+- `TELEGRAM_CHANNEL` (`@channelusername` or a numeric ID)
+- `NASA_API_KEY` (optional, defaults to `DEMO_KEY`)
+- `TRIGGER_SECRET_KEY` (local CLI only)
+
+Deploy with `pnpm deploy`. The daily schedule only runs in production. Add the bot as a channel admin with Post Messages.
+
+## License
 
 MIT

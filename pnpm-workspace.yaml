@@ -1,0 +1,3 @@
+allowBuilds:
+  "@depot/cli": true
+  esbuild: true
