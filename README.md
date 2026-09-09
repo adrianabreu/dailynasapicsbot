@@ -30,6 +30,7 @@ Set these environment variables locally and in the Trigger.dev dashboard (Prod):
 - `TELEGRAM_CHANNEL` (`@channelusername` or a numeric ID)
 - `NASA_API_KEY` (optional, defaults to `DEMO_KEY`)
 - `TRIGGER_SECRET_KEY` (local CLI only)
+- `TRIGGER_PROJECT_REF` (Trigger.dev project ref, local CLI only)
 
 Deploy with `pnpm deploy`. The daily schedule only runs in production. Add the bot as a channel admin with Post Messages.
 
